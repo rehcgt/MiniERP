@@ -16,8 +16,11 @@ namespace MiniERP.Infrastructure.Data
         }
 
         public DbSet<Product> Products => Set<Product>();
-
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<Sale> Sales => Set<Sale>();
+        public DbSet<SaleDetail> SaleDetails => Set<SaleDetail>();
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,10 +30,9 @@ namespace MiniERP.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        private void UpdateAuditFields()
         {
-            var entries = ChangeTracker
-                .Entries<BaseEntity>();
+            var entries = ChangeTracker.Entries<BaseEntity>();
 
             foreach (var entry in entries)
             {
@@ -42,8 +44,22 @@ namespace MiniERP.Infrastructure.Data
                 if (entry.State == EntityState.Modified)
                 {
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    entry.Property(x => x.CreatedAt).IsModified = false;
                 }
             }
+        }
+
+        public override int SaveChanges()
+        {
+            UpdateAuditFields();
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(
+            CancellationToken cancellationToken = default)
+        {
+            UpdateAuditFields();
 
             return base.SaveChangesAsync(cancellationToken);
         }

@@ -20,6 +20,15 @@ namespace MiniERP.Infrastructure.Configurations
             builder.Property(x => x.Name)
                 .HasMaxLength(200)
                 .IsRequired();
+
+            builder.Property(x => x.CostPrice)
+                .HasPrecision(18, 2);
+
+            builder.Property(x => x.SalePrice)
+                .HasPrecision(18, 2);
+
+            builder.Property(x => x.Stock)
+                .HasPrecision(18, 2);
         }
     }
 }

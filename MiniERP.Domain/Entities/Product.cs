@@ -13,6 +13,7 @@ namespace MiniERP.Domain.Entities
         public string Description { get; set; } = string.Empty;
         public decimal CostPrice { get; set; }
         public decimal SalePrice { get; set; }
+        public decimal Stock { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
     }
