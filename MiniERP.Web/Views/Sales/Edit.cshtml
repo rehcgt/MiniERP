@@ -1,0 +1,192 @@
+@model MiniERP.Web.Models.SaleEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Sale";
+    var products = ViewBag.Products as List<MiniERP.Domain.Entities.Product> ?? new List<MiniERP.Domain.Entities.Product>();
+}
+
+<div class="container">
+    <h2 class="mb-4">Edit Sale</h2>
+
+    <form asp-action="Edit" method="post">
+        <input asp-for="Id" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="SaleDate" class="form-label"></label>
+                        <input asp-for="SaleDate" type="date" class="form-control" />
+                        <span asp-validation-for="SaleDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-8 mb-3">
+                        <label asp-for="CustomerId" class="form-label"></label>
+                        <select asp-for="CustomerId" class="form-select" asp-items="ViewBag.Customers">
+                            <option value="">-- Select a customer --</option>
+                        </select>
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Sale Details</span>
+                <button type="button" id="btnAddRow" class="btn btn-sm btn-primary">Add Item</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="detailsTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40%">Product</th>
+                                <th style="width:20%">Quantity</th>
+                                <th style="width:20%">Unit Price</th>
+                                <th style="width:15%">SubTotal</th>
+                                <th style="width:5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Details.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <select name="Details[@i].ProductId" class="form-select product-select">
+                                            <option value="">-- Select --</option>
+                                            @foreach (var product in products)
+                                            {
+                                                if (product.Id == Model.Details[i].ProductId)
+                                                {
+                                                    <option value="@product.Id" data-price="@product.SalePrice" selected>@product.Name (@product.Stock in stock)</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@product.Id" data-price="@product.SalePrice">@product.Name (@product.Stock in stock)</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input name="Details[@i].Quantity" class="form-control qty" type="number" min="1" value="@Model.Details[i].Quantity" />
+                                    </td>
+                                    <td>
+                                        <input name="Details[@i].UnitPrice" class="form-control unit-price" type="number" step="0.01" min="0.01" value="@Model.Details[i].UnitPrice" />
+                                    </td>
+                                    <td>
+                                        <input class="form-control subtotal" readonly />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-danger btn-remove">X</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-end mt-3">
+                    <strong>Total: </strong><span id="totalAmount">0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-success">Update Sale</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        const products = [
+            @foreach (var p in products)
+            {
+                @:{ id: @p.Id, name: "@p.Name", stock: @p.Stock, salePrice: @p.SalePrice },
+            }
+        ];
+
+        function recalculate() {
+            let total = 0;
+            document.querySelectorAll('#detailsTable tbody tr').forEach(row => {
+                const qty = parseFloat(row.querySelector('.qty')?.value || '0');
+                const unitPrice = parseFloat(row.querySelector('.unit-price')?.value || '0');
+                const subtotal = qty * unitPrice;
+                row.querySelector('.subtotal').value = subtotal.toFixed(2);
+                total += subtotal;
+            });
+
+            document.getElementById('totalAmount').textContent = total.toFixed(2);
+        }
+
+        function reindexRows() {
+            const rows = document.querySelectorAll('#detailsTable tbody tr');
+            rows.forEach((row, index) => {
+                row.querySelector('.product-select').name = `Details[${index}].ProductId`;
+                row.querySelector('.qty').name = `Details[${index}].Quantity`;
+                row.querySelector('.unit-price').name = `Details[${index}].UnitPrice`;
+            });
+        }
+
+        function buildProductOptions() {
+            let html = '<option value="">-- Select --</option>';
+            products.forEach(p => {
+                html += `<option value="${p.id}" data-price="${p.salePrice}">${p.name} (${p.stock} in stock)</option>`;
+            });
+            return html;
+        }
+
+        document.getElementById('btnAddRow').addEventListener('click', () => {
+            const tbody = document.querySelector('#detailsTable tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <select class="form-select product-select">
+                        ${buildProductOptions()}
+                    </select>
+                </td>
+                <td><input class="form-control qty" type="number" min="1" value="1" /></td>
+                <td><input class="form-control unit-price" type="number" step="0.01" min="0.01" value="0.01" /></td>
+                <td><input class="form-control subtotal" readonly /></td>
+                <td><button type="button" class="btn btn-sm btn-danger btn-remove">X</button></td>
+            `;
+            tbody.appendChild(tr);
+            reindexRows();
+            recalculate();
+        });
+
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('product-select')) {
+                const selected = e.target.options[e.target.selectedIndex];
+                const price = selected?.getAttribute('data-price');
+                const row = e.target.closest('tr');
+                if (price && row) {
+                    row.querySelector('.unit-price').value = parseFloat(price).toFixed(2);
+                    recalculate();
+                }
+            }
+
+            if (e.target.classList.contains('qty') || e.target.classList.contains('unit-price')) {
+                recalculate();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-remove')) {
+                const rows = document.querySelectorAll('#detailsTable tbody tr');
+                if (rows.length > 1) {
+                    e.target.closest('tr').remove();
+                    reindexRows();
+                    recalculate();
+                }
+            }
+        });
+
+        recalculate();
+    </script>
+}
