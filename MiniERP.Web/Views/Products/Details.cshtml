@@ -1,0 +1,63 @@
+@model MiniERP.Domain.Entities.Product
+
+@{
+    ViewData["Title"] = "Detalles del Producto";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Detalles del Producto</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Código</dt>
+                        <dd class="col-sm-9">@Model.Code</dd>
+
+                        <dt class="col-sm-3">Nombre</dt>
+                        <dd class="col-sm-9">@Model.Name</dd>
+
+                        <dt class="col-sm-3">Descripción</dt>
+                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Description) ? "Sin descripción" : Model.Description)</dd>
+
+                        <dt class="col-sm-3">Categoría</dt>
+                        <dd class="col-sm-9">@Model.Category.Name</dd>
+
+                        <dt class="col-sm-3">Precio Costo</dt>
+                        <dd class="col-sm-9">@Model.CostPrice.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Precio Venta</dt>
+                        <dd class="col-sm-9">@Model.SalePrice.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Stock</dt>
+                        <dd class="col-sm-9">@Model.Stock</dd>
+
+                        <dt class="col-sm-3">Creado</dt>
+                        <dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <dt class="col-sm-3">Última Actualización</dt>
+                            <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+                    </dl>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

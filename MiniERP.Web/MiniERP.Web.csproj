@@ -20,4 +20,8 @@
     <ProjectReference Include="..\MiniERP.Infrastructure\MiniERP.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>
