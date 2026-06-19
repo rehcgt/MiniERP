@@ -1,58 +1,58 @@
 @model MiniERP.Domain.Entities.Product
 
 @{
-    ViewData["Title"] = "Detalles del Producto";
+    ViewData["Title"] = "Product Details";
 }
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="mb-4">Detalles del Producto</h2>
+            <h2 class="mb-4">Product Details</h2>
 
             <div class="card">
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-3">Código</dt>
+                        <dt class="col-sm-3">Code</dt>
                         <dd class="col-sm-9">@Model.Code</dd>
 
-                        <dt class="col-sm-3">Nombre</dt>
+                        <dt class="col-sm-3">Name</dt>
                         <dd class="col-sm-9">@Model.Name</dd>
 
-                        <dt class="col-sm-3">Descripción</dt>
-                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Description) ? "Sin descripción" : Model.Description)</dd>
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Description) ? "No description" : Model.Description)</dd>
 
-                        <dt class="col-sm-3">Categoría</dt>
+                        <dt class="col-sm-3">Category</dt>
                         <dd class="col-sm-9">@Model.Category.Name</dd>
 
-                        <dt class="col-sm-3">Precio Costo</dt>
+                        <dt class="col-sm-3">Cost Price</dt>
                         <dd class="col-sm-9">@Model.CostPrice.ToString("C")</dd>
 
-                        <dt class="col-sm-3">Precio Venta</dt>
+                        <dt class="col-sm-3">Sale Price</dt>
                         <dd class="col-sm-9">@Model.SalePrice.ToString("C")</dd>
 
                         <dt class="col-sm-3">Stock</dt>
                         <dd class="col-sm-9">@Model.Stock</dd>
 
-                        <dt class="col-sm-3">Creado</dt>
-                        <dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+                        <dt class="col-sm-3">Created At</dt>
+                        <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
 
                         @if (Model.UpdatedAt.HasValue)
                         {
-                            <dt class="col-sm-3">Última Actualización</dt>
-                            <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                            <dt class="col-sm-3">Last Updated</dt>
+                            <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("yyyy-MM-dd HH:mm")</dd>
                         }
                     </dl>
 
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Volver al Listado
+                            <i class="bi bi-arrow-left"></i> Back to List
                         </a>
                         <div>
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                                <i class="bi bi-pencil"></i> Editar
+                                <i class="bi bi-pencil"></i> Edit
                             </a>
                             <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
-                                <i class="bi bi-trash"></i> Eliminar
+                                <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
                     </div>

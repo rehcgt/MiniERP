@@ -1,13 +1,13 @@
 @model MiniERP.Web.Models.ProductCreateViewModel
 
 @{
-    ViewData["Title"] = "Crear Producto";
+    ViewData["Title"] = "Create Product";
 }
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="mb-4">Crear Nuevo Producto</h2>
+            <h2 class="mb-4">Create New Product</h2>
 
             <div class="card">
                 <div class="card-body">
@@ -34,7 +34,7 @@
                         <div class="mb-3">
                             <label asp-for="CategoryId" class="form-label"></label>
                             <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
-                                <option value="">-- Seleccione una categoría --</option>
+                                <option value="">-- Select a category --</option>
                             </select>
                             <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
@@ -61,10 +61,10 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Volver
+                                <i class="bi bi-arrow-left"></i> Back
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Guardar
+                                <i class="bi bi-save"></i> Save
                             </button>
                         </div>
                     </form>

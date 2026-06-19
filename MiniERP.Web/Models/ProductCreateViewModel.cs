@@ -4,36 +4,36 @@ namespace MiniERP.Web.Models
 {
     public class ProductCreateViewModel
     {
-        [Required(ErrorMessage = "El código es requerido")]
-        [StringLength(50, ErrorMessage = "El código no puede exceder los 50 caracteres")]
-        [Display(Name = "Código")]
+        [Required(ErrorMessage = "Code is required.")]
+        [StringLength(50, ErrorMessage = "Code cannot exceed 50 characters.")]
+        [Display(Name = "Code")]
         public string Code { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El nombre es requerido")]
-        [StringLength(200, ErrorMessage = "El nombre no puede exceder los 200 caracteres")]
-        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Name is required.")]
+        [StringLength(200, ErrorMessage = "Name cannot exceed 200 characters.")]
+        [Display(Name = "Name")]
         public string Name { get; set; } = string.Empty;
 
-        [Display(Name = "Descripción")]
+        [Display(Name = "Description")]
         public string Description { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El precio de costo es requerido")]
-        [Range(0, double.MaxValue, ErrorMessage = "El precio de costo debe ser mayor o igual a 0")]
-        [Display(Name = "Precio de Costo")]
+        [Required(ErrorMessage = "Cost price is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Cost price must be greater than or equal to 0.")]
+        [Display(Name = "Cost Price")]
         public decimal CostPrice { get; set; }
 
-        [Required(ErrorMessage = "El precio de venta es requerido")]
-        [Range(0, double.MaxValue, ErrorMessage = "El precio de venta debe ser mayor o igual a 0")]
-        [Display(Name = "Precio de Venta")]
+        [Required(ErrorMessage = "Sale price is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Sale price must be greater than or equal to 0.")]
+        [Display(Name = "Sale Price")]
         public decimal SalePrice { get; set; }
 
-        [Required(ErrorMessage = "El stock es requerido")]
-        [Range(0, double.MaxValue, ErrorMessage = "El stock debe ser mayor o igual a 0")]
-        [Display(Name = "Stock Inicial")]
+        [Required(ErrorMessage = "Stock is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Stock must be greater than or equal to 0.")]
+        [Display(Name = "Initial Stock")]
         public decimal Stock { get; set; }
 
-        [Required(ErrorMessage = "La categoría es requerida")]
-        [Display(Name = "Categoría")]
+        [Required(ErrorMessage = "Category is required.")]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
     }
 }

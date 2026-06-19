@@ -42,13 +42,13 @@ namespace MiniERP.Application.Services
         {
             if (await _productRepository.ExistsCodeAsync(code))
             {
-                return (false, "Ya existe un producto con ese código.");
+                return (false, "A product with this code already exists.");
             }
 
             var category = await _categoryRepository.GetByIdAsync(categoryId);
             if (category == null)
             {
-                return (false, "La categoría seleccionada no existe.");
+                return (false, "The selected category does not exist.");
             }
 
             var product = new Product
@@ -65,7 +65,7 @@ namespace MiniERP.Application.Services
             await _productRepository.AddAsync(product);
             await _productRepository.SaveChangesAsync();
 
-            return (true, "Producto creado exitosamente.");
+            return (true, "Product created successfully.");
         }
 
         public async Task<(bool Success, string Message)> UpdateAsync(
@@ -81,18 +81,18 @@ namespace MiniERP.Application.Services
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
-                return (false, "Producto no encontrado.");
+                return (false, "Product not found.");
             }
 
             if (await _productRepository.ExistsCodeAsync(code, id))
             {
-                return (false, "Ya existe otro producto con ese código.");
+                return (false, "Another product with this code already exists.");
             }
 
             var category = await _categoryRepository.GetByIdAsync(categoryId);
             if (category == null)
             {
-                return (false, "La categoría seleccionada no existe.");
+                return (false, "The selected category does not exist.");
             }
 
             product.Code = code;
@@ -106,7 +106,7 @@ namespace MiniERP.Application.Services
             await _productRepository.UpdateAsync(product);
             await _productRepository.SaveChangesAsync();
 
-            return (true, "Producto actualizado exitosamente.");
+            return (true, "Product updated successfully.");
         }
 
         public async Task<(bool Success, string Message)> DeleteAsync(int id)
@@ -114,13 +114,13 @@ namespace MiniERP.Application.Services
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
-                return (false, "Producto no encontrado.");
+                return (false, "Product not found.");
             }
 
             await _productRepository.DeleteAsync(id);
             await _productRepository.SaveChangesAsync();
 
-            return (true, "Producto eliminado exitosamente.");
+            return (true, "Product deleted successfully.");
         }
     }
 }
